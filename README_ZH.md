@@ -1,20 +1,45 @@
-# 飞书/Lark OpenAPI MCP
+# Feishu Channel MCP
 
-[![npm version](https://img.shields.io/npm/v/@larksuiteoapi/lark-mcp.svg)](https://www.npmjs.com/package/@larksuiteoapi/lark-mcp)
-[![npm downloads](https://img.shields.io/npm/dm/@larksuiteoapi/lark-mcp.svg)](https://www.npmjs.com/package/@larksuiteoapi/lark-mcp)
 [![Node.js Version](https://img.shields.io/node/v/@larksuiteoapi/lark-mcp.svg)](https://nodejs.org/)
 
-中文 | [English](./README.md) 
+> 基于 [larksuite/lark-openapi-mcp](https://github.com/larksuite/lark-openapi-mcp) 增强，新增 IM 图片和文件上传能力。
 
-[开发文档检索 MCP](./docs/recall-mcp/README_ZH.md) 
+中文 | [English](./README.md)
+
+[开发文档检索 MCP](./docs/recall-mcp/README_ZH.md)
 
 [官方文档](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/mcp_introduction)
 
 [常见问题](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/use_cases)
 
-> **⚠️ Beta版本提示**：当前工具处于Beta版本阶段，功能和API可能会有变更，请密切关注版本更新。
+飞书/Lark OpenAPI MCP（Model Context Protocol）工具，在官方版本基础上新增了 **IM 图片上传** 和 **文件上传** 两个内置工具，补全了官方版本缺失的文件发送能力。
 
-飞书/Lark官方 OpenAPI MCP（Model Context Protocol）工具，旨在帮助用户快速连接飞书平台并实现 AI Agent 与飞书的高效协作。该工具将飞书开放平台的 API 接口封装为 MCP 工具，使 AI 助手能够直接调用这些接口，实现文档处理、会话管理、日历安排等多种自动化场景。
+## 相比官方版本的变更
+
+### 新增工具
+
+| 工具名 | 功能 | 说明 |
+|--------|------|------|
+| `im.builtin.imageUpload` | 上传图片 | 返回 `image_key`，配合 `im.v1.message.create`（msg_type="image"）发送图片消息 |
+| `im.builtin.fileUpload` | 上传文件 | 返回 `file_key`，配合 `im.v1.message.create`（msg_type="file"/"audio"/"media"）发送文件、音频、视频消息 |
+
+两个工具均支持：
+- **file_path** — 本地文件路径
+- **file_base64** — base64 编码内容
+- 文件大小校验（图片 10MB，文件 30MB）
+- 用户身份（UAT）和应用身份两种模式
+
+### 使用示例
+
+```
+步骤1: 上传文件
+  im.builtin.fileUpload(file_path="/tmp/report.pdf", file_type="pdf", file_name="report.pdf")
+  → 返回 {"file_key": "file_v2_xxx"}
+
+步骤2: 发送文件消息
+  im.v1.message.create(receive_id="oc_xxx", msg_type="file", content='{"file_key":"file_v2_xxx"}')
+  → 用户在飞书收到文件
+```
 
 ## 使用准备
 
@@ -149,7 +174,7 @@ npx -y @larksuiteoapi/lark-mcp login -a cli_xxxx -s yyyyy
 
 ## 自定义配置开启API
 
-> ⚠️ **文件上传下载**：暂不支持文件的上传和下载操作
+> ✅ **文件上传**：已支持 IM 图片和文件上传（`im.builtin.imageUpload`、`im.builtin.fileUpload`）
 
 > ⚠️ **云文档编辑**：暂不支持直接编辑飞书云文档内容（仅支持导入和读取）
 

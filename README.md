@@ -1,8 +1,8 @@
-# Feishu/Lark OpenAPI MCP
+# Feishu Channel MCP
 
-[![npm version](https://img.shields.io/npm/v/@larksuiteoapi/lark-mcp.svg)](https://www.npmjs.com/package/@larksuiteoapi/lark-mcp)
-[![npm downloads](https://img.shields.io/npm/dm/@larksuiteoapi/lark-mcp.svg)](https://www.npmjs.com/package/@larksuiteoapi/lark-mcp)
 [![Node.js Version](https://img.shields.io/node/v/@larksuiteoapi/lark-mcp.svg)](https://nodejs.org/)
+
+> Enhanced fork of [larksuite/lark-openapi-mcp](https://github.com/larksuite/lark-openapi-mcp) with IM image and file upload capabilities.
 
 English | [中文](./README_ZH.md)
 
@@ -12,9 +12,22 @@ English | [中文](./README_ZH.md)
 
 [Trouble Shooting](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/use_cases)
 
-> **⚠️ Beta Version Notice**: This tool is currently in Beta stage. Features and APIs may change, so please stay updated with version releases.
+Feishu/Lark OpenAPI MCP (Model Context Protocol) tool, enhanced with **IM image upload** and **file upload** builtin tools that are missing from the official version.
 
-This is the Feishu/Lark official OpenAPI MCP (Model Context Protocol) tool designed to help users quickly connect to the Feishu/Lark platform and enable efficient collaboration between AI Agents and Feishu/Lark. The tool encapsulates Feishu/Lark Open Platform API interfaces as MCP tools, allowing AI assistants to directly call these interfaces and implement various automation scenarios such as document processing, conversation management, calendar scheduling, and more.
+## What's New
+
+### New Tools
+
+| Tool | Description |
+|------|-------------|
+| `im.builtin.imageUpload` | Upload images, returns `image_key`. Use with `im.v1.message.create` (msg_type="image") to send |
+| `im.builtin.fileUpload` | Upload files (PDF/audio/video/etc), returns `file_key`. Use with `im.v1.message.create` (msg_type="file"/"audio"/"media") to send |
+
+Both tools support:
+- **file_path** — local file path
+- **file_base64** — base64-encoded content
+- File size validation (image: 10MB, file: 30MB)
+- User access token (UAT) and tenant access token modes
 
 ## Preparation
 
@@ -152,7 +165,7 @@ To switch to the international version of Lark, add the `--domain` parameter in 
 
 ## Custom API Configuration
 
-> ⚠️ **File Upload/Download**: File upload and download operations are not yet supported
+> ✅ **File Upload**: IM image and file upload supported (`im.builtin.imageUpload`, `im.builtin.fileUpload`)
 
 > ⚠️ **Document Editing**: Direct editing of Feishu cloud documents is not supported (only importing and reading are available)
 
