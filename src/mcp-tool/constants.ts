@@ -60,6 +60,8 @@ export const presetImToolNames: ToolName[] = [
   'im.v1.chatMembers.get',
   'im.v1.message.create',
   'im.v1.message.list',
+  'im.builtin.imageUpload',
+  'im.builtin.fileUpload',
 ];
 
 export const presetBaseCommonToolNames: ToolName[] = [
